@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/formAccept">
+
+    <fragment
+        android:id="@+id/formAccept"
+        android:name="com.example.myapplication.FormAccept"
+        android:label="FormAccept"
+        tools:layout="@layout/fragment_form_accept"
+        >
+        <argument
+            android:name="agr"
+            app:argType="integer"
+            android:defaultValue="0"
+            />
+        <action
+            android:id="@+id/action_formAccept_to_detail"
+            app:destination="@id/detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/detail"
+        android:name="com.example.myapplication.Detail"
+        android:label="Detail"
+        tools:layout="@layout/fragment_detail"
+        >
+        <action
+            android:id="@+id/action_detail_to_formAccept"
+            app:destination="@id/formAccept"
+            app:enterAnim="@anim/fade" />
+        <argument
+            android:name="score"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>
