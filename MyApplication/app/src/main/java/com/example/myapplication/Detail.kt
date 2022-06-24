@@ -4,21 +4,28 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentDetailBinding
 import com.example.myapplication.viewmodal.DetailViewModal
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.adapter.ListAdapter
+import com.example.myapplication.adapter.ListListener
+import com.example.myapplication.database.ITEM_TYPE_HEADER
+import com.example.myapplication.database.ITEM_TYPE_MAIN
 import com.example.myapplication.database.ItemDetail
 
 class Detail : Fragment(){
     public val TAG:String = "DETAIL"
     var listName = listOf<String>("Tran Van Loc", "Tran Thi Ngoc Bich", "Pham Thi My Duyen", "Tran Anh Tai", "Nguyen Thi Minh Anh", "Truong Thi Thanh Xuan")
     private lateinit var model : DetailViewModal
-    private var adapter = ListAdapter()
+    private var adapter: ListAdapter? = null
     private var layoutManager: RecyclerView.LayoutManager? = null
 
     override fun onCreateView(
@@ -37,11 +44,26 @@ class Detail : Fragment(){
     }
 
     fun learnRecycleView(binding: FragmentDetailBinding){
+        //create adapter
+        adapter = ListAdapter(ListListener {
+            id -> Toast.makeText(context, "ID: " + id, Toast.LENGTH_LONG).show()
+            if(this.findNavController().popBackStack()){
+
+            }else{
+
+            }
+        })
+
         //add item
+        adapter!!.pushData(ItemDetail(ITEM_TYPE_HEADER, 0, ""))
         for (i in 0..5){
-            var items : ItemDetail = ItemDetail(i.toLong(), listName[i])
-            adapter.pushData(items)
+            var items : ItemDetail = ItemDetail(ITEM_TYPE_MAIN, i.toInt(), listName[i])
+            adapter!!.pushData(items)
         }
+        //learn girdlayout
+        //val manager = GridLayoutManager(activity, 3)
+        //binding.listItem.layoutManager = manager
+        //add layout manager
         LinearLayoutManager(activity).also { binding.listItem.layoutManager = it }
         //link adapter
         binding.listItem.adapter = adapter
