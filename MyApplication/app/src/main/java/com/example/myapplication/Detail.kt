@@ -34,7 +34,7 @@ class Detail : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         Log.i("Detail Learn Kotlin", "Create View")
-        val binding: FragmentDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
+        val binding: FragmentDetailBinding = FragmentDetailBinding.inflate(inflater)
         //learn view model
         learnViewModel(binding)
         //learn recycle view

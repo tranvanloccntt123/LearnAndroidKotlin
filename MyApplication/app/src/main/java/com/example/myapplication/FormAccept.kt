@@ -3,6 +3,8 @@ package com.example.myapplication
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -25,8 +27,8 @@ class FormAccept : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentFormAcceptBinding.inflate(inflater)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_form_accept, container, false)
         setHasOptionsMenu(true)
         model = activity?.let {
             ViewModelProviders.of(it)[DetailViewModal::class.java]
@@ -34,16 +36,8 @@ class FormAccept : Fragment(){
         resourceModel = activity?.let {
             ViewModelProviders.of(it)[ResourceViewModel::class.java]
         }!!
-        resourceModel._response.observe(viewLifecycleOwner, Observer {
-            binding.responseApi.text =  if(it.toString().length> 50){
-                it.toString().substring(0, 50) + "..."
-            }else{
-                it.toString()
-            }
-        })
-        model.score.observe(viewLifecycleOwner, Observer {
-            binding.formAcceptText.text = "Score: " + it.toString()
-        })
+        binding.api = resourceModel
+        binding.counter = model
         return binding.root
     }
 
