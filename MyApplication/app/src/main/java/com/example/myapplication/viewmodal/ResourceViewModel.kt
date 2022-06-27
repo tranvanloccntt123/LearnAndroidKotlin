@@ -2,6 +2,7 @@ package com.example.myapplication.viewmodal
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.json.ConvertJson
 import com.example.myapplication.network.MarsApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,17 +15,22 @@ class ResourceViewModel() : ViewModel() {
     }
 
     fun callApi(callback : (res : String) -> Unit){
-        MarsApi.retrofitServices.getProperties().enqueue(object : Callback<String>{
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if(response.isSuccessful){
-                    _response.value = response.body()
-                }
+        MarsApi.retrofitServices.getProperties().enqueue(object : Callback<List<ConvertJson>>{
+            override fun onResponse(
+                call: Call<List<ConvertJson>>,
+                response: Response<List<ConvertJson>>
+            ) {
+                _response.value = "Get Api Success with " + response.body()?.size + " items"
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                _response.value = "Fail: " + t.message
+            override fun onFailure(call: Call<List<ConvertJson>>, t: Throwable) {
+                _response.value = "Failure"
             }
         })
     }
+}
+
+private fun <T> Call<T>.enqueue(callback: Callback<String>) {
+
 }
 

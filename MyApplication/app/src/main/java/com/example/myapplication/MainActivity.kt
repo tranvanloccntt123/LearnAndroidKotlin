@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         model = ViewModelProviders.of(this, viewModelFactory).get(DetailViewModal::class.java)
         //create resource api model
         resourceModel = ViewModelProviders.of(this).get(ResourceViewModel::class.java)
+        resourceModel.callApi {
+            Log.i("API", it)
+        }
         //create nav
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         NavigationUI.setupActionBarWithNavController(this, navHostFragment.navController, drawerLayout)

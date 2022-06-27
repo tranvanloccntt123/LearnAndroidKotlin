@@ -27,17 +27,20 @@ class FormAccept : Fragment(){
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_form_accept, container, false)
+        setHasOptionsMenu(true)
         model = activity?.let {
             ViewModelProviders.of(it)[DetailViewModal::class.java]
         }!!
         resourceModel = activity?.let {
             ViewModelProviders.of(it)[ResourceViewModel::class.java]
         }!!
-        binding.api = resourceModel
-        resourceModel.callApi {
-            Log.i("API", it)
-        }
-        setHasOptionsMenu(true)
+        resourceModel._response.observe(viewLifecycleOwner, Observer {
+            binding.responseApi.text =  if(it.toString().length> 50){
+                it.toString().substring(0, 50) + "..."
+            }else{
+                it.toString()
+            }
+        })
         model.score.observe(viewLifecycleOwner, Observer {
             binding.formAcceptText.text = "Score: " + it.toString()
         })
