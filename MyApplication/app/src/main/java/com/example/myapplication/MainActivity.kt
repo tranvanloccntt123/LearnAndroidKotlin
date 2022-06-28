@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -12,9 +13,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.viewmodal.DetailFactory
-import com.example.myapplication.viewmodal.DetailViewModal
-import com.example.myapplication.viewmodal.ResourceViewModel
+import com.example.myapplication.viewmodal.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -30,9 +29,9 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = binding.drawerLayout
         //create model
         viewModelFactory = DetailFactory()
-        model = ViewModelProviders.of(this, viewModelFactory).get(DetailViewModal::class.java)
+        model = ViewModelProvider(this, viewModelFactory).get(DetailViewModal::class.java)
         //create resource api model
-        resourceModel = ViewModelProviders.of(this).get(ResourceViewModel::class.java)
+        resourceModel = ViewModelProvider(this).get(ResourceViewModel::class.java)
         //create nav
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         NavigationUI.setupActionBarWithNavController(this, navHostFragment.navController, drawerLayout)
@@ -43,7 +42,8 @@ class MainActivity : AppCompatActivity() {
             else drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
         Log.i("Architecture: ", "onCreate")
-
+        //create room model
+        val tableRoomModel = ViewModelProvider(this, TableFactory(this.application)).get(TableModel::class.java)
         resourceModel.callApi {  }
     }
 

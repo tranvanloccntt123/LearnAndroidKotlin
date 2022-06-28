@@ -36,6 +36,7 @@ class FormAccept : Fragment(){
         resourceModel = activity?.let {
             ViewModelProviders.of(it)[ResourceViewModel::class.java]
         }!!
+
         binding.api = resourceModel
         binding.counter = model
         return binding.root

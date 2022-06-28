@@ -11,21 +11,11 @@ abstract class LocalDatabase : RoomDatabase() {
 
     companion object{
         @Volatile
-        private var INSTANCE: LocalDatabase? = null
+        private var INSTANCE: LocalDatabase ? = null
         fun getDatabase(context: Context) : LocalDatabase{
-            val tempInstance = INSTANCE
-            if(tempInstance != null){
-                return tempInstance
-            }
-            synchronized(this){
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    LocalDatabase::class.java,
-                    "database"
-                ).build()
-                INSTANCE = instance
-                return instance
-            }
+            if(INSTANCE == null)
+                INSTANCE = Room.databaseBuilder(context.applicationContext, LocalDatabase::class.java, "Database").build()
+            return INSTANCE!!
         }
     }
 }
